@@ -1,8 +1,12 @@
 <!DOCTYPE html>
 <html>
+
 <head>
+
   <title>NFL Guess Who?</title>
-  <style>
+ 
+ <style>
+
     body {
       font-family: Chalkduster;
       text-align: center;
@@ -11,21 +15,21 @@
       margin: 0; /* Remove default body margin */
       padding-top: 20px; /* Add some padding at the top */
     }
+
     #game-container {
       width: 80%;
       margin: 20px auto;
       padding: 20px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
       position: relative; /* For absolute positioning of high scores */
       background-color: transparent;
       font-family: courier new;
       color: white; /* Set text color inside the container to black */
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
     }
+
     #question-area {
       margin-bottom: 20px;
     }
+
     #guess-input {
       padding: 10px;
       margin-right: 10px;
@@ -34,6 +38,7 @@
       font-family: sans-serif; /* Keep input default */
       color: black; /* Ensure text in input is black */
     }
+
     button {
       padding: 10px 20px;
       background-color: #4CAF50; /* Green button color */
@@ -45,13 +50,16 @@
       font-family: times;
       transition: background-color 0.3s ease; /* Add a smooth hover transition */
     }
+
     button:hover {
       background-color: #45a049; /* Darker green on hover */
     }
+
     #result-area {
       margin-top: 20px;
       font-weight: bold;
     }
+
     #timer {
       font-size: 1.5em;
       margin-bottom: 10px;
@@ -59,90 +67,106 @@
       color: red;
       font-weight: bold;
     }
+
     #high-scores-container {
-      position: absolute;
-      
-      right: 20px;
-      background-color: rgba(255, 255, 255, 0.8);
-      padding-left: 25px;
-      padding-right: 25px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      text-align: center;
-      max-height: 200px;
-      overflow-y: auto;
-      color: black; /* Set text color for high scores */
-      font-family: sans-serif; /* Keep high scores readable */
-    }
-    #high-scores-container h2 {
-      margin-top: 0;
-      font-size: 1.2em;
-    }
-    #high-scores-list {
-      list-style-type: none;
-      padding: 0;
-      margin: 0;
-    }
-    #high-scores-list li {
-      padding: 5px 0;
-      border-bottom: 1px dotted #eee;
-    }
-    #high-scores-list li:last-child {
-      border-bottom: none;
-    }
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  text-align: center;
+  max-height: 200px;
+  overflow-y: auto;
+  color: black;
+  font-family: courier new;
+  margin: 20px auto;
+  width: 90%;
+  box-sizing: border-box;
+}
+
+
+@media (min-width: 768px) {
+  .layout-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  #game-container, #high-scores-container {
+    width: 45%;
+    max-width: 300px;
+  }
+}
+
+@media (max-width: 767px) {
+  .layout-wrapper {
+    display: block;
+  }
+
+  #high-scores-container {
+    width: 90%;
+    margin: 20px auto 0;
+    position: relative;
+  }
+}
+
   </style>
 </head>
 <body>
 
- <h1>NFL Guess Who?</h1>
+  <h1>NFL Guess Who?</h1>
 
-<div id="high-scores-container" style="display: none;">
-    <h2 style="text-decoration: underline;">Top Scores</h2>
-    <ol id="high-scores-list"></ol>
-  </div>
+  <div class="layout-wrapper">
+    <div id="game-container">
+      <img src="XO.jpeg" alt="Kenny" class="center" style="max-width: 100%; display: block; margin: 0 auto;" />
+<br/>
 
-<img src="XO.jpeg" alt="Kenny" class="center" style="width: 500px;"/ style="align: center;">
-<div id="game-container">
-  
+      <div id="name-entry">
+        <label for="player-name">Enter Your Name:</label>
+        <input type="text" id="player-name">
+        <button id="start-button">Start Game</button>
+      </div>
 
- 
+      <div id="game-area" style="display: none;">
+        <div id="timer">Time Left: <span id="time-remaining">5:00</span></div>
+        <div id="question-area">
+          <p id="question-text"></p>
+          <ul id="clues-list">
+            <li id="clue1" style="display: none;"></li>
+            <li id="clue2" style="display: none;"></li>
+            <li id="clue3" style="display: none;"></li>
+            <li id="clue4" style="display: none;"></li>
+          </ul>
+        </div>
+        <div id="guess-area">
+          <input type="text" id="guess-input" placeholder="Your Guess">
 
-  <div id="name-entry">
-    <label for="player-name">Enter Your Name:</label>
-    <input type="text" id="player-name">
-    <button id="start-button">Start Game</button>
-  </div>
+          <p style="padding: 10px;"><button id="submit-button">Submit Guess</button></p>
+        </div>
+        <div id="result-area">
+          <p id="guess-result"></p>
+          <p id="score"></p>
+          <p id="wrong-guesses"></p>
+        </div>
+      </div>
 
-  <div id="game-area" style="display: none;">
-    <div id="timer">Time Left: <span id="time-remaining">5:00</span></div>
-    <div id="question-area">
-      <p id="question-text"></p>
-      <ul id="clues-list">
-        <li id="clue1" style="display: none;"></li>
-        <li id="clue2" style="display: none;"></li>
-        <li id="clue3" style="display: none;"></li>
-        <li id="clue4" style="display: none;"></li>
-      </ul>
-    </div>
-    <div id="guess-area">
-      <input type="text" id="guess-input" placeholder="Your Guess">
-      <button id="submit-button">Submit Guess</button>
-    </div>
-    <div id="result-area">
-      <p id="guess-result"></p>
-      <p id="score"></p>
-      <p id="wrong-guesses"></p>
-    </div>
-  </div>
+      <div id="game-over" style="display: none;">
+        <h2>Game Over!</h2>
+        <p id="final-score"></p>
+        <p id="game-over-message"></p>
+        <button id="save-score-button" style="display: none;">Save Score</button>
+        <button id="restart-button">Play Again?</button>
+      </div>
+    </div>
 
-  <div id="game-over" style="display: none;">
-    <h2>Game Over!</h2>
-    <p id="final-score"></p>
-    <p id="game-over-message"></p>
-    <button id="save-score-button" style="display: none;">Save Score</button>
-    <button id="restart-button">Play Again?</button>
-  </div>
-</div>
+    <div id="high-scores-container">
+      <h2 style="text-decoration: underline;">Top Scores</h2>
+      <ol id="high-scores-list"></ol>
+    </div>
+  </div>
+
+
 
 <script>
 const questions = [
