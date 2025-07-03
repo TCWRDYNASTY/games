@@ -28,7 +28,7 @@
             padding: 1.5rem; /* Adjusted padding */
             gap: 15px; /* Increased gap for better spacing */
             margin-bottom: 2rem; /* Added margin below navigation */
-            
+
             border-radius: 8px; /* Slightly rounded corners */
         }
 
@@ -41,7 +41,7 @@
             border: 1px solid #5c6bc0; /* Lighter border */
             border-radius: 6px; /* Rounded corners for buttons */
             text-align: center;
-            transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out; 
+            transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
         }
 
         .nav-container a:hover {
@@ -86,6 +86,8 @@
 </head>
 <body>
 
+    <audio id="backgroundGameAudio" src="playagame.mp3" preload="auto" autoplay loop></audio>
+
     <div class="nav-container">
         <a href="10game.html">NFL Guess Who!</a>
         <a href="TCWRMEMORY.html">TWCR Memory</a>
@@ -94,6 +96,18 @@
     <div class="image-container">
         <img src="Kenny2.jpg" alt="Kenny" style="width: 500px; height: auto;">
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const audio = document.getElementById('backgroundGameAudio');
+            // Try to play the audio. This is still subject to browser autoplay policies.
+            audio.play().catch(error => {
+                console.log("Audio autoplay was prevented:", error);
+                // If autoplay is blocked, you might want to show a small play button here
+                // for the user to manually start it.
+            });
+        });
+    </script>
 
 </body>
 </html>
