@@ -1,113 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Games</title>
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Games</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-        body {
-            margin: 0;
-            padding: 2rem; /* Increased padding for better spacing */
-            font-family: 'Courier New', monospace;
-            background-color: #1e3159;
-            color: #f5f5f5; /* Lighter text for better contrast */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            line-height: 1.6; /* Improved readability */
-        }
+    body {
+      margin: 0;
+      padding: 2rem;
+      font-family: 'Courier New', monospace;
+      background: linear-gradient(to bottom right, #1e3159, #0d1b33);
+      color: #f5f5f5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
 
-        .nav-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            padding: 1.5rem; /* Adjusted padding */
-            gap: 15px; /* Increased gap for better spacing */
-            margin-bottom: 2rem; /* Added margin below navigation */
+    h1 {
+      font-size: 3rem;
+      color: #FFD700;
+      margin-bottom: 2rem;
+      text-shadow: 2px 2px 10px rgba(255, 215, 0, 0.5);
+      letter-spacing: 2px;
+      animation: glow 2s ease-in-out infinite alternate;
+    }
 
-            border-radius: 8px; /* Slightly rounded corners */
-        }
+    @keyframes glow {
+      from {
+        text-shadow: 0 0 10px #FFD700;
+      }
+      to {
+        text-shadow: 0 0 20px #ffd700, 0 0 30px #ffc107;
+      }
+    }
 
-        .nav-container a {
-            color: #e0f7fa; /* Light, inviting link color */
-            font-size: 1.1rem; /* Slightly larger font size */
-            text-decoration: none;
-            padding: 12px 20px; /* Adjusted padding */
-            background-color: #3f51b5; /* More vibrant button color */
-            border: 1px solid #5c6bc0; /* Lighter border */
-            border-radius: 6px; /* Rounded corners for buttons */
-            text-align: center;
-            transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
-        }
+    .nav-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      padding: 1.5rem 2rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 2px solid #FFD70033;
+      border-radius: 12px;
+      box-shadow: 0 0 10px #FFD70033;
+      margin-bottom: 2rem;
+    }
 
-        .nav-container a:hover {
-            background-color: #5e35b1; /* Darker hover color */
-            transform: scale(1.05); /* Slight scale on hover */
-        }
+    .nav-container a {
+      color: #1e3159;
+      font-weight: bold;
+      font-size: 1.2rem;
+      text-decoration: none;
+      padding: 14px 24px;
+      background-color: #FFD700;
+      border: none;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(255, 215, 0, 0.3);
+    }
 
-        .image-container {
-            margin-bottom: 2rem; /* Space below the image */
-            border-radius: 8px; /* Rounded corners for the image */
-            overflow: hidden; /* Ensures rounded corners are visible */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
-        }
+    .nav-container a:hover {
+      background-color: #ffc107;
+      transform: scale(1.1);
+      box-shadow: 0 6px 16px rgba(255, 215, 0, 0.6);
+    }
 
-        .image-container img {
-            display: block; /* Prevents extra space below the image */
-            max-width: 100%; /* Ensures image doesn't overflow */
-            height: auto;
-        }
+    @media (max-width: 600px) {
+      body {
+        padding: 1rem;
+      }
 
-        @media (max-width: 600px) {
-            body {
-                padding: 1rem; /* Adjust padding for smaller screens */
-            }
+      h1 {
+        font-size: 2.2rem;
+        text-align: center;
+      }
 
-            .nav-container {
-                padding: 1rem;
-                gap: 10px;
-                margin-bottom: 1.5rem;
-            }
+      .nav-container {
+        flex-direction: column;
+        gap: 15px;
+        padding: 1rem;
+      }
 
-            .nav-container a {
-                font-size: 1rem;
-                padding: 10px 15px;
-            }
-
-            .image-container {
-                margin-bottom: 1.5rem;
-            }
-        }
-    </style>
+      .nav-container a {
+        font-size: 1rem;
+        padding: 12px 18px;
+      }
+    }
+  </style>
 </head>
 <body>
 
-    <audio id="backgroundGameAudio" src="playagame.mp3" preload="auto"></audio>
+  <audio id="backgroundGameAudio" src="playagame.mp3" preload="auto"></audio>
 
-    <div class="nav-container">
-        <a href="10game.html">NFL Guess Who!</a>
-        <a href="TCWRMEMORY.html">TWCR Memory</a>
-    </div>
+  <h1>🎮 Choose Your Game</h1>
 
-    <div class="image-container">
-        <img src="Kenny2.jpg" alt="Kenny" style="width: 500px; height: auto;">
-    </div>
+  <div class="nav-container">
+    <a href="10game.html">NFL Guess Who!</a>
+    <a href="TCWRMEMORY.html">TCWR Memory</a>
+  </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const audio = document.getElementById('backgroundGameAudio');
-            // Try to play the audio. This is still subject to browser autoplay policies.
-            audio.play().catch(error => {
-                console.log("Audio autoplay was prevented:", error);
-                // If autoplay is blocked, you might want to show a small play button here
-                // for the user to manually start it.
-            });
-        });
-    </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const audio = document.getElementById('backgroundGameAudio');
+      audio.play().catch(error => {
+        console.log("Audio autoplay was prevented:", error);
+      });
+    });
+  </script>
 
 </body>
 </html>
+ 
