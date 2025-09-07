@@ -386,20 +386,24 @@
             requestAnimationFrame(animate);
         }
 
-        // Function to determine the winner based on the final angle
-        function determineWinner() {
-            const centerX = canvas.width / 2;
-            const centerY = canvas.height / 2;
-            const pointerAngle = (2 * Math.PI - startAngle + Math.PI / 2) % (2 * Math.PI);
-            
-            const normalizedAngle = (pointerAngle + 2 * Math.PI) % (2 * Math.PI);
+      // Function to determine the winner based on the final angle
+function determineWinner() {
+    // Correct calculation for the angle the pointer lands on
+    // The pointer is at the top (3π/2 or 270 degrees) relative to the wheel's starting point (0 degrees on the right).
+    // We adjust the final startAngle to align with this pointer position.
+    const normalizedStartAngle = (startAngle % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI);
+    const pointerAngle = (2 * Math.PI - normalizedStartAngle + 3 * Math.PI / 2) % (2 * Math.PI);
 
-            const degrees = normalizedAngle * (180 / Math.PI);
-            const prizeIndex = Math.floor(degrees / (360 / prizes.length));
-            const winningPrize = prizes[prizes.length - 1 - prizeIndex].text;
-            
-            showMessage(winningPrize);
-        }
+    // Calculate the index based on the pointer's angle and the segment arc size
+    const segmentAngle = 2 * Math.PI / prizes.length;
+    const prizeIndex = Math.floor(pointerAngle / segmentAngle);
+
+    // Get the winning prize from the prizes array using the calculated index
+    const winningPrize = prizes[prizeIndex].text;
+    
+    // Display the winning message
+    showMessage(winningPrize);
+}
         
         // Custom message box function to display the result
         function showMessage(text) {
