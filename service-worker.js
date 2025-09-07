@@ -35,7 +35,6 @@ const filesToCache = [
   '/warning.mp3',
   '/tcwr-192.png',
   '/tcwr-512.png',
-  'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2'
 ];
 
 self.addEventListener('install', (event) => {
