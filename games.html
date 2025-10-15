@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NFL Who Am I? - The Ultimate Guessing Game</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+ 
+<style>
+    /*
+    ========================================
+    === 1. General & Base Styles ===
+    ========================================
+    */
+    body {
+        text-align: center;
+        background: linear-gradient(135deg, #2a52be, #4a004e);
+        color: white;
+        margin: 0;
+        padding: 10px;
+        box-sizing: border-box;
+        overflow-x: hidden;
+    }
+
+    h1 {
+        font-family: 'Anton', sans-serif;
+        /* Default size for all screens */
+        font-size: 3em; 
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        margin-top: 15px;
+        margin-bottom: 25px; /* Added a bit more space below the title */
+        background: linear-gradient(45deg, #FFFDE7, #FFEB3B, #FDD835);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-fill-color: transparent;
+        text-shadow:
+            0 0 10px rgba(255, 255, 255, 0.7),
+            0 0 20px rgba(255, 255, 255, 0.5),
+            0 0 30px rgba(255, 255, 255, 0.3);
+        animation: pulsate 2s infinite alternate;
+    }
+
+    @keyframes pulsate {
+        0% {
+            transform: scale(1);
+            text-shadow:
+                0 0 10px rgba(255, 255, 255, 0.7),
+                0 0 20px rgba(255, 255, 255, 0.5),
+                0 0 30px rgba(255, 255, 255, 0.3);
+        }
+
+        100% {
+            transform: scale(1.02);
+            text-shadow:
+                0 0 15px rgba(255, 255, 255, 0.9),
+                0 0 25px rgba(255, 255, 255, 0.7),
+                0 0 40px rgba(255, 255, 255, 0.5);
+        }
+    }
+
+    h2,
+    h3 {
+        font-family: 'Impact', sans-serif;
+        color: #FFC107;
+        margin-bottom: 15px;
+    }
+
+    /*
+    ========================================
+    === 2. Layout & Structure (Single Column) ===
+    ========================================
+    */
+    .layout-wrapper {
+        /* Ensures everything stacks vertically and is centered */
+        display: flex;
+        flex-direction: column; 
+        align-items: center;
+        gap: 30px; /* Increased gap for separation between the main components */
+        margin-top: 10px;
+    }
+
+    /*
+    ========================================
+    === 3. Game Area Components ===
+    ========================================
+    */
+    #game-container {
+        background-color: transparent;
+        padding: 10px;
+        border-radius: 8px;
+        width: 95%; /* Use a consistent width */
+        max-width: 450px; /* Standardize max-width */
+        box-sizing: border-box;
+        font-family: 'Courier New', monospace;
+        color: white;
+    }
+
+    #question-area {
+        margin-bottom: 15px;
+        font-size: 1.1em;
+    }
+    
+    #clues-list {
+        list-style-position: inside;
+        padding-left: 0;
+    }
+    
+    #clues-list li {
+        text-align: center;
+        margin-bottom: 5px;
+    }
+
+
+    #timer {
+        font-size: 1.8em;
+        margin-bottom: 15px;
+        font-family: 'Impact', sans-serif;
+        color: #FF4500;
+        font-weight: bold;
+    }
+
+    /* Guess Area */
+    #guess-area {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        margin-top: 15px;
+    }
+
+    #guess-input {
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-family: sans-serif;
+        color: black;
+        width: 90%;
+        max-width: 300px;
+        box-sizing: border-box;
+    }
+
+    button {
+        padding: 15px 30px;
+        width: 90%;
+        max-width: 300px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1.1em;
+        font-family: 'Times New Roman', serif;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    
+    #submit-button {
+        width: 90%;
+        max-width: 300px;
+    }
+
+    button:hover {
+        background-color: #45a049;
+        transform: translateY(-2px);
+    }
+
+    #guess-area p {
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    #result-area {
+        margin-top: 25px;
+        font-weight: bold;
+        font-size: 1.1em;
+        color: #90EE90;
+    }
+    
+    /* Name Entry Area (Input/Start Button) */
+    #name-entry {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px; /* Space between input and button */
+        padding: 20px;
+        width: 95%; /* Use a consistent width */
+        max-width: 400px; /* Standardize max-width */
+        margin: 0 auto; /* Removed top/bottom margin since we use the .layout-wrapper gap */
+    }
+
+    #player-name {
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-family: sans-serif;
+        color: black;
+        width: 100%;
+        max-width: 300px;
+        box-sizing: border-box;
+        text-align: center;
+    }
+
+    #start-button {
+        width: 100%;
+        max-width: 300px;
+    }
+
+
+    /*
+    ========================================
+    === 4. High Scores Table Styles ===
+    ========================================
+    */
+    #high-scores-container {
+        /* Ensuring this element conforms to the new overall width standards */
+        background-color: #00FF00;
+        border: 5px solid #FFD700;
+        box-shadow:
+            0 0 15px #00FF00,
+            0 0 25px #00FF00,
+            0 0 40px #FFD700;
+        padding: 20px 10px;
+        border-radius: 8px;
+        text-align: center;
+        max-height: 250px;
+        overflow-y: auto;
+        color: #1e3159;
+        font-family: 'Press Start 2P', cursive;
+        width: 95%;
+        max-width: 400px;
+        box-sizing: border-box;
+        margin-bottom: 30px; /* Added margin for space at the bottom of the page */
+    }
+    
+    #high-scores-container ol {
+        padding-left: 30px;
+        text-align: left;
+    }
+
+    #high-scores-container h2 {
+        color: #8A2BE2;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+        margin-bottom: 15px;
+        font-family: 'Impact', sans-serif;
+        text-decoration: none;
+    }
+
+    #high-scores-container ol li::marker {
+        color: #1e3159;
+        font-family: 'Arial', sans-serif;
+        font-size: 1.2em;
+        font-weight: bold;
+    }
+
+    #high-scores-container li {
+        padding: 8px 0;
+        border-bottom: 1px dotted rgba(0, 0, 0, 0.3);
+        font-size: 1em;
+        line-height: 1.5;
+        color: #1e3159;
+        text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+    }
+
+    /*
+    ========================================
+    === 5. Responsive Design (Overrides Removed) ===
+    ========================================
+    */
+    /* The large media query has been removed to enforce a single column on all screen sizes. */
+    
+    /* Small adjustment to h1 size on large screens, just to prevent it from getting too small */
+    @media (min-width: 768px) {
+        h1 {
+            font-size: 4em;
+        }
+    }
+</style>
+</head>
+
+<body>
+    <audio id="background-audio" src="nfltheme.m4a" preload="auto"></audio>
+    <audio id="gameover-audio" src="gameover.m4a" preload="auto"></audio>
+    <audio id="touchdown-audio" src="touchdown.m4a" preload="auto"></audio>
+    <audio id="start-sound" src="clock.mp3" preload="auto" loop></audio>
+
+    <script>
+        document.addEventListener('click', () => {
+            const audio = document.getElementById('background-audio');
+            if (audio.paused) {
+                audio.play().catch(e => console.log("Autoplay blocked:", e));
+            }
+        }, {
+            once: true
+        });
+    </script>
+
+    <h1>NFL Who Am I?</h1>
+
+    <div class="layout-wrapper">
+        
+        <div id="name-entry">
+            <label for="player-name">Enter Your Name:</label>
+            <input type="text" id="player-name">
+            <button id="start-button">Start Game</button>
+        </div>
+
+        <div id="high-scores-container">
+            <h2>High Scores</h2>
+            <ol id="high-scores-list"></ol>
+        </div>
+
+        <div id="game-area" style="display: none;">
+            <div id="timer">Time Left: <span id="time-remaining">5:00</span></div>
+            <div id="question-area">
+                <p id="question-text"></p>
+                <ul id="clues-list">
+                    <li id="clue1" style="display: none;"></li>
+                    <li id="clue2" style="display: none;"></li>
+                    <li id="clue3" style="display: none;"></li>
+                    <li id="clue4" style="display: none;"></li>
+                </ul>
+            </div>
+            <div id="guess-area">
+                <input type="text" id="guess-input" placeholder="Your Guess">
+                <button id="submit-button">Submit Guess</button>
+            </div>
+            <div id="result-area">
+                <p id="guess-result"></p>
+                <p id="score"></p>
+                <p id="wrong-guesses"></p>
+            </div>
+        </div>
+
+        <div id="game-over" style="display: none;">
+            <h2>Game Over!</h2>
+            <p id="final-score"></p>
+            <p id="game-over-message"></p>
+            <button id="save-score-button" style="display: none;">Save Score</button>
+            <button id="restart-button">Play Again?</button>
+        </div>
+
+    </div>
+
+
+  <script>
+    // ------------------------------------------------------------------
+    // === SUPABASE CONFIGURATION (Using your new credentials) ===
+    // ------------------------------------------------------------------
+    const supabaseUrl = 'https://jheqfwykhvyngfqawknr.supabase.co';
+    const supabaseApiKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpoZXFmd3lraHZ5bmdmcWF3a25yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ5NDE3MjEsImV4cCI6MjA2MDUxNzcyMX0.LLWSmRdZW_5XD2Z8NqGB5BTP3hAtk63pOnZiSckf7BM';
+    const highScoresTableName = 'scores'; // Your table name
+
+    // ------------------------------------------------------------------
+    // === GAME DATA (QUESTIONS) ===
+    // ------------------------------------------------------------------
+    const questions = [{
+        question: "Who am I?",
+        clues: [
+            "I played quarterback.",
+            "I won a Super Bowl MVP award during this time frame.",
+            "My jersey number was 12.",
+            "I played for the Green Bay Packers."
+        ],
+        answer: "Aaron Rodgers"
+    }, {
+        question: "Who am I?",
+        clues: [
+            "I am a tight end.",
+            "I played for the Kansas City Chiefs and am known for my connection with my quarterback.",
+            "My jersey number is 87.",
+            "My girlfriend is a famous singer."
+        ],
+        answer: "Travis Kelce"
+    }, {
+        question: "Who am I?",
+        clues: [
+            "I am a wide receiver.",
+            "I hold the NFL record for most receiving yards in a season.",
+            "My jersey number was 81.",
+            "I played for the Detroit Lions."
+        ],
+        answer: "Calvin Johnson"
+    }, {
+        question: "Who am I?",
+        clues: [
+            "I played running back.",
+            "I have a 'Beast Mode' nickname.",
+            "My jersey number was 24.",
+            "I played for the Seattle Seahawks."
+        ],
+        answer: "Marshawn Lynch"
+    }, {
+        question: "Who am I?",
+        clues: [
+            "I am a quarterback.",
+            "I have won multiple Super Bowl championships with the New England Patriots.",
+            "My jersey number was 12.",
+            "I am considered one of the greatest quarterbacks of all time."
+        ],
+        answer: "Tom Brady"
+    }, {
+        question: "Who am I?",
+        clues: [
+            "I am a defensive end.",
+            "I am known for my pass-rushing abilities and 'sack dances'.",
+            "My jersey number was 99.",
+            "I played for the Houston Texans and Arizona Cardinals."
+        ],
+        answer: "J.J. Watt"
+    }, {
+        question: "Who am I?",
+        clues: [
+            "I am a wide receiver.",
+            "I was known for my incredible speed and deep-threat ability.",
+            "My jersey number was 10.",
+            "I played for the Philadelphia Eagles."
+        ],
+        answer: "DeSean Jackson"
+    }, {
+        question: "Who am I?",
+        clues: [
+            "I played middle linebacker.",
+            "I was the leader of the 'Monsters of the Midway' defense.",
+            "My jersey number was 54.",
+            "I played my entire career for the Chicago Bears."
+        ],
+        answer: "Brian Urlacher"
+    }, {
+        question: "Who am I?",
+        clues: [
+            "I am a quarterback.",
+            "I won a Super Bowl with the New Orleans Saints.",
+            "My jersey number is 9.",
+            "I have a distinctive birthmark on my face."
+        ],
+        answer: "Drew Brees"
+    }, {
+        question: "Who am I?",
+        clues: [
+            "I am a cornerback.",
+            "I was known as 'Prime Time'.",
+            "My jersey numbers included 21 and 2.",
+            "I played for multiple teams, including the Atlanta Falcons and Dallas Cowboys."
+        ],
+        answer: "Deion Sanders"
+    }];
+    // ------------------------------------------------------------------
+    // === GAME VARIABLES ===
+    // ------------------------------------------------------------------
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let wrongGuesses = 0;
+    let clueIndex = 0;
+    let playerName = "";
+    const maxWrongGuesses = 5;
+    const gameDuration = 5 * 60;
+    let timeLeft = gameDuration;
+    let timerInterval;
+    let gameStarted = false;
+
+    // ------------------------------------------------------------------
+    // === DOM ELEMENTS ===
+    // ------------------------------------------------------------------
+    const highScoresList = document.getElementById("high-scores-list");
+    const nameEntryDiv = document.getElementById("name-entry");
+    const gameAreaDiv = document.getElementById("game-area");
+    const gameOverDiv = document.getElementById("game-over");
+    const playerNameInput = document.getElementById("player-name");
+    const startButton = document.getElementById("start-button");
+    const questionText = document.getElementById("question-text");
+    const clueElements = [
+        document.getElementById("clue1"),
+        document.getElementById("clue2"),
+        document.getElementById("clue3"),
+        document.getElementById("clue4")
+    ];
+    const guessInput = document.getElementById("guess-input");
+    const submitButton = document.getElementById("submit-button");
+    const guessResultText = document.getElementById("guess-result");
+    const scoreText = document.getElementById("score");
+    const wrongGuessesText = document.getElementById("wrong-guesses");
+    const finalScoreText = document.getElementById("final-score");
+    const restartButton = document.getElementById("restart-button");
+    const timeRemainingDisplay = document.getElementById("time-remaining");
+    const gameOverMessage = document.getElementById("game-over-message");
+    const saveScoreButton = document.getElementById("save-score-button");
+    const backgroundAudio = document.getElementById("background-audio");
+    const gameOverAudio = document.getElementById("gameover-audio");
+    const touchdownAudio = document.getElementById("touchdown-audio");
+    const startSound = document.getElementById("start-sound");
+
+    // ------------------------------------------------------------------
+    // === SUPABASE HIGH SCORE FUNCTIONS (RESTORED) ===
+    // ------------------------------------------------------------------
+    async function fetchHighScores() {
+        try {
+            // Supabase REST API: Select top 10 scores ordered by score descending
+            const response = await fetch(`${supabaseUrl}/rest/v1/${highScoresTableName}?order=score.desc&limit=10`, {
+                headers: {
+                    'apikey': supabaseApiKey,
+                    'Authorization': `Bearer ${supabaseApiKey}`,
+                },
+            });
+            if (response.ok) {
+                const data = await response.json();
+                displayHighScores(data);
+            } else {
+                console.error('Failed to fetch high scores:', response.status, await response.text());
+            }
+        } catch (error) {
+            console.error('Error fetching high scores (catch):', error);
+        }
+    }
+
+    function displayHighScores(scores) {
+        highScoresList.innerHTML = '';
+        scores.forEach(entry => {
+            const li = document.createElement("li");
+            // Supabase returns the 'name' and 'score' fields we defined
+            li.textContent = `${entry.name}: ${entry.score}`;
+            highScoresList.appendChild(li);
+        });
+    }
+
+    async function saveHighScore() {
+        if (playerName && score > 0) {
+            try {
+                // Supabase REST API: Insert a new row
+                const response = await fetch(`${supabaseUrl}/rest/v1/${highScoresTableName}`, {
+                    method: 'POST',
+                    headers: {
+                        'apikey': supabaseApiKey,
+                        'Authorization': `Bearer ${supabaseApiKey}`,
+                        'Content-Type': 'application/json',
+                        'Prefer': 'return=minimal', // Saves bandwidth by not returning the created object
+                    },
+                    body: JSON.stringify({
+                        name: playerName,
+                        score: score
+                    }),
+                });
+                if (response.ok) {
+                    saveScoreButton.style.display = "none";
+                    fetchHighScores(); // Refresh the high scores list
+                } else {
+                    console.error('Failed to save score:', response.status, await response.text());
+                }
+            } catch (error) {
+                console.error('Error saving score:', error);
+            }
+        }
+    }
+
+    // ------------------------------------------------------------------
+    // === GAME LOGIC FUNCTIONS (Unchanged) ===
+    // ------------------------------------------------------------------
+
+    function startGame() {
+        playerName = playerNameInput.value.trim();
+        if (!playerName) {
+            alert("Please enter your name to start the game.");
+            return;
+        }
+        nameEntryDiv.style.display = "none";
+        gameAreaDiv.style.display = "block";
+        score = 0;
+        wrongGuesses = 0;
+        currentQuestionIndex = 0;
+        timeLeft = gameDuration; // Reset timer
+        updateTimerDisplay();
+        loadQuestion();
+        updateScoreDisplay();
+        updateWrongGuessesDisplay();
+        startTimer();
+        gameStarted = true;
+        // Fetch scores on start to show current list while playing
+        fetchHighScores(); 
+    }
+
+    function startTimer() {
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            updateTimerDisplay();
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                endGame("Time's up!");
+            }
+        }, 1000);
+    }
+
+    function updateTimerDisplay() {
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        timeRemainingDisplay.textContent = `${minutes}:${String(seconds).padStart(2, '0')}`;
+    }
+
+    function loadQuestion() {
+        clueIndex = 0;
+        const currentQuestion = questions[currentQuestionIndex];
+        questionText.textContent = currentQuestion.question;
+        clueElements.forEach(clue => clue.style.display = "none");
+        showNextClue();
+        guessInput.value = "";
+        guessResultText.textContent = "";
+        submitButton.disabled = false;
+    }
+
+    function showNextClue() {
+        if (clueIndex < questions[currentQuestionIndex].clues.length) {
+            clueElements[clueIndex].textContent = questions[currentQuestionIndex].clues[clueIndex];
+            clueElements[clueIndex].style.display = "block";
+            clueIndex++;
+        }
+    }
+
+    function submitGuess() {
+        const userAnswer = guessInput.value.trim();
+        const correctAnswer = questions[currentQuestionIndex].answer;
+
+        if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
+            let points = 0;
+            switch (clueIndex) {
+                case 1:
+                    points = 4;
+                    break;
+                case 2:
+                    points = 3;
+                    break;
+                case 3:
+                    points = 2;
+                    break;
+                case 4:
+                    points = 1;
+                    break;
+            }
+            score += points;
+            guessResultText.textContent = `Correct! You earned ${points} points.`;
+            submitButton.disabled = true;
+            touchdownAudio.play().catch(() => {});
+            setTimeout(nextQuestion, 1500);
+        } else {
+            guessResultText.textContent = "Incorrect. Try again with the next clue.";
+            wrongGuesses++;
+            updateWrongGuessesDisplay();
+            if (wrongGuesses >= maxWrongGuesses) {
+                endGame("Too many wrong guesses!");
+            } else {
+                showNextClue();
+            }
+        }
+        updateScoreDisplay();
+    }
+
+    function nextQuestion() {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < questions.length) {
+            loadQuestion();
+        } else {
+            endGame("You finished all the questions!");
+        }
+    }
+
+    function endGame(reason) {
+        clearInterval(timerInterval);
+        gameAreaDiv.style.display = "none";
+        gameOverDiv.style.display = "block";
+        finalScoreText.textContent = `Your final score is: ${score}`;
+        gameOverMessage.textContent = reason;
+        backgroundAudio.pause();
+        gameOverAudio.play().catch(() => {});
+        if (score > 0 && reason !== "Time's up!") {
+            saveScoreButton.style.display = "block";
+        }
+        gameStarted = false;
+    }
+
+    function restartGame() {
+        gameOverDiv.style.display = "none";
+        nameEntryDiv.style.display = "block";
+        playerNameInput.value = "";
+        score = 0;
+        wrongGuesses = 0;
+        currentQuestionIndex = 0;
+        updateWrongGuessesDisplay();
+        updateScoreDisplay();
+        timeLeft = gameDuration;
+        updateTimerDisplay();
+        gameStarted = false;
+    }
+
+    function updateScoreDisplay() {
+        scoreText.textContent = `Score: ${score}`;
+    }
+
+    function updateWrongGuessesDisplay() {
+        wrongGuessesText.textContent = `Wrong Guesses: ${wrongGuesses} / ${maxWrongGuesses}`;
+    }
+
+    // ------------------------------------------------------------------
+    // === EVENT LISTENERS AND INITIAL LOAD ===
+    // ------------------------------------------------------------------
+    startButton.addEventListener("click", startGame);
+    playerNameInput.addEventListener("keypress", e => {
+        if (e.key === "Enter") startGame();
+    });
+    submitButton.addEventListener("click", submitGuess);
+    guessInput.addEventListener("keypress", e => {
+        if (e.key === "Enter") submitGuess();
+    });
+    restartButton.addEventListener("click", restartGame);
+    saveScoreButton.addEventListener("click", saveHighScore);
+
+    // Initial load
+    fetchHighScores();
+</script>
+</body>
+
+</html>
